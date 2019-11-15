@@ -1,9 +1,11 @@
 import java.util.Scanner;
+import java.io.IOException;
 
 public class ATM {
 
     private Scanner in;
     private BankAccount activeAccount;
+    private Bank bank;
 
     public static final int VIEW = 1;
     public static final int DEPOSIT = 2;
@@ -14,8 +16,16 @@ public class ATM {
     public static final int INSUFFICIENT = 1;
     public static final int SUCCESS = 2;
 
+    public static final int FIRST_NAME_WIDTH = 20;
+    public static final int LAST_NAME_WIDTH = 30;
+
     public ATM() {
         in = new Scanner(System.in);
+        try {
+          this.bank = new Bank();
+        } catch (IOException e) {
+          System.out.println(e);
+        }
 
         activeAccount = new BankAccount(1234, 100000001, new User("Jaedan", "Blechinger"));
     }
@@ -25,12 +35,27 @@ public class ATM {
 
         while (true) {
             System.out.print("Account No.: ");
-            long accountNo = in.nextLong();
+            String accountNo = in.nextLine();
 
-            System.out.print("PIN        : ");
-            int pin = in.nextInt();
+            int pin;
+            if (accountNo != "+"){
+                System.out.print("PIN        : ");
+                pin = in.nextInt();
+            }
 
-            if (isValidLogin(accountNo, pin)) {
+            if (accountNo == "+"){
+                System.out.print("First name: ");
+                String firstName = in.nextLine();
+
+                System.out.print("Last name: ");
+                String lastName = in.nextLine();
+
+                System.out.print("PIN: ");
+                int newPin = in.nextInt();
+
+                System.out.println(bank.createAccount(newPin, new User(firstName, lastName)));
+
+            } else if (isValidLogin(Long.parseLong(accountNo), pin)) {
                 System.out.println("\nHello, again, " + activeAccount.getAccountHolder().getFirstName() + "!\n");
 
                 boolean validLogin = true;
@@ -44,7 +69,7 @@ public class ATM {
                     }
                 }
             } else {
-                if (accountNo == -1 && pin == -1) {
+                if (Long.parseLong(accountNo) == -1 && pin == -1) {
                     shutdown();
                 } else {
                     System.out.println("\nInvalid account number and/or PIN.\n");
