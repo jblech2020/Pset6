@@ -10,11 +10,13 @@ public class ATM {
     public static final int VIEW = 1;
     public static final int DEPOSIT = 2;
     public static final int WITHDRAW = 3;
-    public static final int LOGOUT = 4;
+    public static final int TRANSFER = 4;
+    public static final int LOGOUT = 5;
 
     public static final int INVALID = 0;
     public static final int INSUFFICIENT = 1;
     public static final int SUCCESS = 2;
+    public static final int OVERLOAD = 3;
 
     public static final int FIRST_NAME_WIDTH = 20;
     public static final int LAST_NAME_WIDTH = 30;
@@ -38,8 +40,7 @@ public class ATM {
         while (true) {
             System.out.print("Account No.: ");
             String accountNo = in.nextLine().strip();
-            System.out.println(!accountNo.equals("+"));
-
+            // System.out.println(!accountNo.equals("+"));
 
             if (!accountNo.equals("+")){
                 System.out.print("PIN        : ");
@@ -72,6 +73,7 @@ public class ATM {
                         case VIEW: showBalance(); break;
                         case DEPOSIT: deposit(); break;
                         case WITHDRAW: withdraw(); break;
+                        case TRANSFER: transfer(); break;
                         case LOGOUT: validLogin = false; break;
                         default: System.out.println("\nInvalid selection.\n"); break;
                     }
@@ -94,7 +96,8 @@ public class ATM {
         System.out.println("[1] View balance");
         System.out.println("[2] Deposit money");
         System.out.println("[3] Withdraw money");
-        System.out.println("[4] Logout");
+        System.out.println("[4] Transfer money");
+        System.out.println("[5] Logout");
 
         return in.nextInt();
     }
@@ -110,6 +113,8 @@ public class ATM {
         int status = activeAccount.deposit(amount);
         if (status == ATM.INVALID) {
             System.out.println("\nDeposit rejected. Amount must be greater than $0.00.\n");
+        } else if (status == ATM.OVERLOAD) {
+            System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.\n");
         } else if (status == ATM.SUCCESS) {
             System.out.println("\nDeposit accepted.\n");
         }
@@ -127,6 +132,25 @@ public class ATM {
         } else if (status == ATM.SUCCESS) {
             System.out.println("\nWithdrawal accepted.\n");
         }
+    }
+
+    public void transfer(){
+      // do {
+        System.out.print("\nEnter account: ");
+        long accountToTransfer = in.nextLong();
+      // } while ();
+
+      System.out.print("\nEnter amount: ");
+      double amount = in.nextDouble();
+
+      int status = activeAccount.withdraw(amount);
+      if (status == ATM.INVALID) {
+          System.out.println("\nTransfer rejected. Amount must be greater than $0.00.\n");
+      } else if (status == ATM.INSUFFICIENT) {
+          System.out.println("\nTransfer rejected. Insufficient funds.\n");
+      } else if (status == ATM.SUCCESS) {
+          System.out.println("\nTransfer accepted.\n");
+      }
     }
 
     public void shutdown() {
