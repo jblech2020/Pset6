@@ -19,6 +19,8 @@ public class ATM {
     public static final int FIRST_NAME_WIDTH = 20;
     public static final int LAST_NAME_WIDTH = 30;
 
+    int pin;
+
     public ATM() {
         in = new Scanner(System.in);
         try {
@@ -35,23 +37,29 @@ public class ATM {
 
         while (true) {
             System.out.print("Account No.: ");
-            String accountNo = in.nextLine();
+            String accountNo = in.nextLine().strip();
+            System.out.println(!accountNo.equals("+"));
 
-            int pin;
-            if (accountNo != "+"){
+
+            if (!accountNo.equals("+")){
                 System.out.print("PIN        : ");
                 pin = in.nextInt();
             }
 
-            if (accountNo == "+"){
+            if (accountNo.equals("+")){
+                System.out.print("\n");
+
                 System.out.print("First name: ");
-                String firstName = in.nextLine();
+                String firstName = in.nextLine().strip();
 
                 System.out.print("Last name: ");
-                String lastName = in.nextLine();
+                String lastName = in.nextLine().strip();
 
-                System.out.print("PIN: ");
-                int newPin = in.nextInt();
+                int newPin;
+                do {
+                  System.out.print("PIN: ");
+                  newPin = in.nextInt();
+                } while (1000 > newPin || newPin > 9999);
 
                 System.out.println(bank.createAccount(newPin, new User(firstName, lastName)));
 
