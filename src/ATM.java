@@ -22,6 +22,7 @@ public class ATM {
     public static final int LAST_NAME_WIDTH = 30;
 
     int pin;
+    String accountNo;
 
     public ATM() {
         in = new Scanner(System.in);
@@ -30,16 +31,15 @@ public class ATM {
         } catch (IOException e) {
           System.out.println(e);
         }
-
-        activeAccount = new BankAccount(1234, 100000001, new User("Jaedan", "Blechinger"));
     }
 
     public void startup() {
-        System.out.println("Welcome to the AIT ATM!\n");
+        System.out.println("Welcome to the AIT ATM!");
 
         while (true) {
+            System.out.print("\n");
             System.out.print("Account No.: ");
-            String accountNo = in.nextLine().strip();
+            accountNo = in.nextLine().strip();
             // System.out.println(!accountNo.equals("+"));
 
             if (!accountNo.equals("+")){
@@ -65,6 +65,9 @@ public class ATM {
                 System.out.println(bank.createAccount(newPin, new User(firstName, lastName)));
 
             } else if (isValidLogin(Long.parseLong(accountNo), pin)) {
+                activeAccount = bank.login(Long.parseLong(accountNo), pin);
+                System.out.print(activeAccount);
+
                 System.out.println("\nHello, again, " + activeAccount.getAccountHolder().getFirstName() + "!\n");
 
                 boolean validLogin = true;
@@ -77,6 +80,7 @@ public class ATM {
                         case LOGOUT: validLogin = false; break;
                         default: System.out.println("\nInvalid selection.\n"); break;
                     }
+                    in.nextLine();
                 }
             } else {
                 if (Long.parseLong(accountNo) == -1 && pin == -1) {
@@ -89,7 +93,15 @@ public class ATM {
     }
 
     public boolean isValidLogin(long accountNo, int pin) {
-        return accountNo == activeAccount.getAccountNo() && pin == activeAccount.getPin();
+        if (bank.getAccount(accountNo)!=null){
+          if (bank.login(accountNo, pin)!=null){
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
     }
 
     public int getSelection() {
@@ -97,7 +109,7 @@ public class ATM {
         System.out.println("[2] Deposit money");
         System.out.println("[3] Withdraw money");
         System.out.println("[4] Transfer money");
-        System.out.println("[5] Logout");
+        System.out.println("[5] Logout\n");
 
         return in.nextInt();
     }
@@ -117,6 +129,9 @@ public class ATM {
             System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.\n");
         } else if (status == ATM.SUCCESS) {
             System.out.println("\nDeposit accepted.\n");
+            System.out.println(activeAccount);
+            bank.update(activeAccount);
+            bank.save();
         }
     }
 
