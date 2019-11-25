@@ -146,11 +146,8 @@ public class ATM {
                 case DEPOSIT: deposit(); break;
                 case WITHDRAW: withdraw(); break;
                 case TRANSFER: transfer(); break;
-                case LOGOUT: validLogin = false; break;
+                case LOGOUT: validLogin = false; in.nextLine(); break;
                 default: System.out.println("\nInvalid selection.\n"); break;
-            }
-            if (validLogin = false){
-                in.nextLine();
             }
         }
     }
@@ -250,9 +247,16 @@ public class ATM {
         } else if (transferAccount == activeAccount){
           System.out.println("\nTransfer rejected. Destination account matches origin.");
         } else {
-
-            System.out.print("Enter amount: ");
-            double amount = in.nextDouble();
+            double amount = -1;
+            while (amount<0){
+              System.out.print("Enter amount: ");
+              try {
+                amount = in.nextDouble();
+              } catch (Exception e){
+                System.out.println("\nInvalid input. Try again.");
+                in.nextLine();
+              }
+            }
 
             int withdrawStatus = activeAccount.withdraw(amount);
             int depositStatus = transferAccount.deposit(amount);
