@@ -181,10 +181,11 @@ public class ATM {
     }
 
     public void transfer(){
-      // do {
+      long accountToTransfer
+      do {
         System.out.print("\nEnter account: ");
-        long accountToTransfer = in.nextLong();
-      // } while ();
+        accountToTransfer = in.nextLong();
+      } while ();
 
       System.out.print("\nEnter amount: ");
       double amount = in.nextDouble();
@@ -196,6 +197,15 @@ public class ATM {
           System.out.println("\nTransfer rejected. Insufficient funds.");
       } else if (status == ATM.SUCCESS) {
           System.out.println("\nTransfer accepted.");
+      }
+      bank.update(activeAccount);
+      bank.save();
+
+      int status = activeAccount.deposit(amount);
+      if (status == ATM.OVERLOAD) {
+          System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.");
+          bank.update(activeAccount);
+          bank.save();
       }
     }
 
