@@ -44,7 +44,7 @@ public class BankAccount {
     public int deposit(double amount) {
         if (amount <= 0) {
             return ATM.INVALID;
-        } else if (amount > 999999999999.99) {
+        } else if (balance+amount > 999999999999.99) {
             return ATM.OVERLOAD;
         } else {
             balance = balance + amount;
