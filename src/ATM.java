@@ -184,16 +184,21 @@ public class ATM {
       long accountToTransfer = 0;
       while (accountToTransfer<100000001 || accountToTransfer > 999999999){
         System.out.print("\nEnter account: ");
-        accountToTransfer = in.nextLong();
+        try {
+				  accountToTransfer = in.nextLong();
+  			} catch (Exception e){
+  				System.out.println("\nInvalid input. Try again.\n");
+  			}
       }
 
-      String transferAccount = bank.getAccount(accountToTransfer);
+      BankAccount transferAccount = bank.getAccount(accountToTransfer);
 
       if (transferAccount == null){
         System.out.println("\nTransfer rejected. Destination account not found.");
       } else if (transferAccount == activeAccount){
         System.out.println("\nTransfer rejected. Destination account matches origin.");
       } else {
+
           System.out.print("\nEnter amount: ");
           double amount = in.nextDouble();
 
@@ -206,6 +211,7 @@ public class ATM {
           } else if (withdrawStatus == ATM.SUCCESS && depositStatus == ATM.SUCCESS) {
               System.out.println("\nTransfer accepted.");
               bank.update(activeAccount);
+              bank.update(transferAccount);
               bank.save();
           } else if (depositStatus == ATM.OVERLOAD) {
             System.out.println("\nTransfer rejected. Amount would cause destination balance to exceed $999,999,999,999.99.");
