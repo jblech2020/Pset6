@@ -111,7 +111,6 @@ public class ATM {
         boolean validLogin = true;
         while (validLogin) {
             switch (getSelection()) {
-                System.out.println("\n")
                 case VIEW: showBalance(); break;
                 case DEPOSIT: deposit(); break;
                 case WITHDRAW: withdraw(); break;
@@ -138,19 +137,18 @@ public class ATM {
         } catch (InputMismatchException e){
           System.out.println("\nPlease input a number between [1] and [5].");
         }
-        in.nextLine();
-
       }
+      in.nextLine();
       return input;
     }
 
     public void showBalance() {
-        System.out.println("Current balance: " + activeAccount.getBalance());
+        System.out.println("\nCurrent balance: " + activeAccount.getBalance());
         getSelectionWithRedirects();
     }
 
     public void deposit() {
-        System.out.print("Enter amount: ");
+        System.out.print("\nEnter amount: ");
         double amount = in.nextDouble();
 
         int status = activeAccount.deposit(amount);
@@ -167,7 +165,7 @@ public class ATM {
     }
 
     public void withdraw() {
-        System.out.print("Enter amount: ");
+        System.out.print("\nEnter amount: ");
         double amount = in.nextDouble();
 
         int status = activeAccount.withdraw(amount);
@@ -185,12 +183,14 @@ public class ATM {
 
     public void transfer(){
         long accountToTransfer = 0;
+        System.out.print("\n");
         while (accountToTransfer<100000001 || accountToTransfer > 999999999){
           System.out.print("Enter account: ");
           try {
   				  accountToTransfer = in.nextLong();
     			} catch (Exception e){
     				System.out.println("\nInvalid input. Try again.\n");
+            in.nextLine();
     			}
         }
 
