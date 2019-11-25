@@ -49,19 +49,30 @@ public class ATM {
             if (accountNo.equals("+")){
                 System.out.print("\n");
 
-                System.out.print("First name: ");
-                String firstName = in.nextLine().strip();
-
-                System.out.print("Last name: ");
-                String lastName = in.nextLine().strip();
-
+                //Initializes variables
+                String firstName;
+                String lastName;
                 int newPin;
+
+                //Regulates variable's format
+                do {
+                  System.out.print("First name: ");
+                  firstName = in.nextLine().strip();
+                } while (firstName.length()>20 || firstName.length()<1 || firstName == null);
+
+                do {
+                  System.out.print("Last name: ");
+                  lastName = in.nextLine().strip();
+                } while (lastName.length()>20 || lastName.length()<1 || lastName == null);
+
                 do {
                   System.out.print("PIN: ");
                   newPin = in.nextInt();
                 } while (1000 > newPin || newPin > 9999);
 
+                //Creates the new account with the inputted information
                 System.out.println(bank.createAccount(newPin, new User(firstName, lastName)));
+                in.nextLine();
 
             } else if (isValidLogin(Long.parseLong(accountNo), pin)) {
                 activeAccount = bank.login(Long.parseLong(accountNo), pin);
