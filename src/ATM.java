@@ -108,18 +108,20 @@ public class ATM {
     }
 
     public void getSelectionWithRedirects() {
-      boolean validLogin = true;
-      while (validLogin) {
-          switch (getSelection()) {
-              case VIEW: showBalance(); break;
-              case DEPOSIT: deposit(); break;
-              case WITHDRAW: withdraw(); break;
-              case TRANSFER: transfer(); break;
-              case LOGOUT: validLogin = false; break;
-              default: System.out.println("\nInvalid selection.\n"); break;
-          }
-          in.nextLine();
-      }
+        boolean validLogin = true;
+        while (validLogin) {
+            switch (getSelection()) {
+                case VIEW: showBalance(); break;
+                case DEPOSIT: deposit(); break;
+                case WITHDRAW: withdraw(); break;
+                case TRANSFER: transfer(); break;
+                case LOGOUT: validLogin = false; break;
+                default: System.out.println("\nInvalid selection.\n"); break;
+            }
+            if (validLogin = false){
+                in.nextLine();
+            }
+        }
     }
 
     public int getSelection() {
