@@ -181,37 +181,30 @@ public class ATM {
     }
 
     public void transfer(){
-      long accountToTransfer
+      long accountToTransfer;
       do {
         System.out.print("\nEnter account: ");
         accountToTransfer = in.nextLong();
-      } while ();
+      } while (bank.getAccount(accountToTransfer)==null);
 
-      System.out.print("\nEnter amount: ");
-      double amount = in.nextDouble();
+      String transferAccount = bank.getAccount(accountToTransfer);
 
-      boolean withdrawCheck;
-      int withdrawStatus = activeAccount.withdraw(amount);
-      int depositStatus = transferAccount.deposit(amount);
-      if (withdrawStatus == ATM.INVALID) {
-          System.out.println("\nTransfer rejected. Amount must be greater than $0.00.");
-      } else if (withdrawStatus == ATM.INSUFFICIENT) {
-          System.out.println("\nTransfer rejected. Insufficient funds.");
-      } else if (withdrawStatus == ATM.SUCCESS && depositStatus == ATM.SUCCESS) {
-          System.out.println("\nTransfer accepted.");
-          bank.update(activeAccount);
-          bank.save();
-      } else if (depositStatus == ATM.OVERLOAD) {
-        System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.");
-      }
+        System.out.print("\nEnter amount: ");
+        double amount = in.nextDouble();
 
-
-
-      if (status == ATM.OVERLOAD) {
-          System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.");
-          bank.update(activeAccount);
-          bank.save();
-      }
+        int withdrawStatus = activeAccount.withdraw(amount);
+        int depositStatus = transferAccount.deposit(amount);
+        if (withdrawStatus == ATM.INVALID) {
+            System.out.println("\nTransfer rejected. Amount must be greater than $0.00.");
+        } else if (withdrawStatus == ATM.INSUFFICIENT) {
+            System.out.println("\nTransfer rejected. Insufficient funds.");
+        } else if (withdrawStatus == ATM.SUCCESS && depositStatus == ATM.SUCCESS) {
+            System.out.println("\nTransfer accepted.");
+            bank.update(activeAccount);
+            bank.save();
+        } else if (depositStatus == ATM.OVERLOAD) {
+          System.out.println("\nTransfer rejected. Amount would cause destination balance to exceed $999,999,999,999.99.");
+        }
     }
 
     public void shutdown() {
