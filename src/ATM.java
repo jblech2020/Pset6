@@ -181,13 +181,15 @@ public class ATM {
     }
 
     public void transfer(){
-      long accountToTransfer;
-      do {
+      long accountToTransfer = 0;
+      while (accountToTransfer<100000001 || accountToTransfer > 999999999){
         System.out.print("\nEnter account: ");
         accountToTransfer = in.nextLong();
-      } while (bank.getAccount(accountToTransfer)==null);
+      }
 
       String transferAccount = bank.getAccount(accountToTransfer);
+
+      if (transferAccount )
 
         System.out.print("\nEnter amount: ");
         double amount = in.nextDouble();
