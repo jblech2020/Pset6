@@ -40,7 +40,6 @@ public class ATM {
             System.out.print("\n");
             System.out.print("Account No.: ");
             accountNo = in.nextLine().strip();
-            // System.out.println(!accountNo.equals("+"));
 
             if (!accountNo.equals("+")){
                 System.out.print("PIN        : ");
@@ -66,7 +65,6 @@ public class ATM {
 
             } else if (isValidLogin(Long.parseLong(accountNo), pin)) {
                 activeAccount = bank.login(Long.parseLong(accountNo), pin);
-                System.out.print(activeAccount);
 
                 System.out.println("\nHello, again, " + activeAccount.getAccountHolder().getFirstName() + "!\n");
 
@@ -86,7 +84,8 @@ public class ATM {
                 if (Long.parseLong(accountNo) == -1 && pin == -1) {
                     shutdown();
                 } else {
-                    System.out.println("\nInvalid account number and/or PIN.\n");
+                    System.out.println("\nInvalid account number and/or PIN.");
+                    in.nextLine();
                 }
             }
         }
@@ -129,7 +128,6 @@ public class ATM {
             System.out.println("\nDeposit rejected. Amount would cause balance to exceed $999,999,999,999.99.\n");
         } else if (status == ATM.SUCCESS) {
             System.out.println("\nDeposit accepted.\n");
-            System.out.println(activeAccount);
             bank.update(activeAccount);
             bank.save();
         }
@@ -146,6 +144,8 @@ public class ATM {
             System.out.println("\nWithdrawal rejected. Insufficient funds.\n");
         } else if (status == ATM.SUCCESS) {
             System.out.println("\nWithdrawal accepted.\n");
+            bank.update(activeAccount);
+            bank.save();
         }
     }
 

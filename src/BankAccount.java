@@ -9,20 +9,18 @@ public class BankAccount {
     private double balance;
     private User accountHolder;
 
-    public BankAccount(int pin, long accountNo, User accountHolder) {
+    public BankAccount(int pin, long accountNo, double balance, User accountHolder) {
         this.pin = pin;
         this.accountNo = ++BankAccount.prevAccountNo;
-        // System.out.println("Account Number: " + this.accountNo);
-        this.balance = 0.0;
+        this.balance = balance;
         this.accountHolder = accountHolder;
     }
 
-    public BankAccount(int pin, long accountNo, double balance, User accountHolder) {
-      this.pin = pin;
-      this.accountNo = ++BankAccount.prevAccountNo;
-      // System.out.println("Account Number: " + this.accountNo);
-      this.balance = balance;
-      this.accountHolder = accountHolder;
+    public BankAccount(int pin, long accountNo, User accountHolder) {
+        this.pin = pin;
+        this.accountNo = ++BankAccount.prevAccountNo;
+        this.balance = 0.0;
+        this.accountHolder = accountHolder;
     }
 
     public int getPin() {
@@ -66,4 +64,21 @@ public class BankAccount {
 
         return ATM.SUCCESS;
     }
+
+    /*
+    * Formatting for the data file
+    */
+
+    private String formatBalance() {
+        return String.format("%1$15s", balance);
+    }
+
+    @Override
+    public String toString() {
+       return String.valueOf(accountNo) +
+           String.valueOf(pin) +
+           accountHolder.serialize() +
+           formatBalance();
+   }
+
 }
