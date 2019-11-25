@@ -55,7 +55,10 @@ public class Bank {
     public BankAccount createAccount(int pin, User user) {
     	accounts.add(new BankAccount(pin, generateAccountNo(), user));
 
+      update(accounts.get(accounts.size() - 1));
+      save();
     	return accounts.get(accounts.size() - 1);
+
     }
 
     /**

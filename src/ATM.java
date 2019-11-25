@@ -81,6 +81,7 @@ public class ATM {
 
                 System.out.println("\nHello, again, " + activeAccount.getAccountHolder().getFirstName() + "!");
 
+                //Creates the selection menu and allows for user input
                 getSelectionWithRedirects();
 
             } else {
