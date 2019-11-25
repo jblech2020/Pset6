@@ -23,9 +23,6 @@ public class ATM {
     public static final int FIRST_NAME_WIDTH = 20;
     public static final int LAST_NAME_WIDTH = 30;
 
-    int pin;
-    String accountNo;
-
     public ATM() {
         in = new Scanner(System.in);
         try {
@@ -39,13 +36,24 @@ public class ATM {
         System.out.println("Welcome to the AIT ATM!");
 
         while (true) {
+            //initializes variables
+            int pin = 100000;
+            String accountNo = "account";
+
             System.out.print("\n");
             System.out.print("Account No.: ");
             accountNo = in.nextLine().strip();
 
             if (!accountNo.equals("+")){
-                System.out.print("PIN        : ");
-                pin = in.nextInt();
+                while (pin != -1 && (pin>9999 || pin<1000)){
+                    System.out.print("PIN        : ");
+                    try {
+                      pin = in.nextInt();
+                    } catch (InputMismatchException e) {
+                      System.out.println("\nPlease enter a four digit number.\n");
+                      in.nextLine();
+                    }
+                }
             }
 
             if (accountNo.equals("+")){
