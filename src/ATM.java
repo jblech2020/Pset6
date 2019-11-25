@@ -35,7 +35,7 @@ public class ATM {
     public boolean checkStringInput(String input){
       if (input.isEmpty()){
         return true;
-      } else if (input.equals("-1")){
+      } else if (input.equals("-1") || input.equals("+")){
         return false;
       }
 
@@ -98,7 +98,7 @@ public class ATM {
                     try {
                       newPin = in.nextInt();
                     } catch (InputMismatchException e) {
-                      System.out.println("\nPlease enter a four digit number.\n");
+                      System.out.println("\nPlease enter a four digit number.");
                       in.nextLine();
                     }
                 }
@@ -167,9 +167,9 @@ public class ATM {
           input = in.nextInt();
         } catch (InputMismatchException e){
           System.out.println("\nPlease input a number between [1] and [5].");
+          in.nextLine();
         }
       }
-      in.nextLine();
       return input;
     }
 
@@ -179,8 +179,17 @@ public class ATM {
     }
 
     public void deposit() {
-        System.out.print("\nEnter amount: ");
-        double amount = in.nextDouble();
+        System.out.print("\n");
+        double amount = -1;
+        while (amount<0){
+          System.out.print("Enter amount: ");
+          try {
+            amount = in.nextDouble();
+          } catch (Exception e){
+            System.out.println("\nInvalid input. Try again.");
+            in.nextLine();
+          }
+        }
 
         int status = activeAccount.deposit(amount);
         if (status == ATM.INVALID) {
@@ -196,8 +205,17 @@ public class ATM {
     }
 
     public void withdraw() {
-        System.out.print("\nEnter amount: ");
-        double amount = in.nextDouble();
+        System.out.print("\n");
+        double amount = -1;
+        while (amount<0){
+          System.out.print("Enter amount: ");
+          try {
+            amount = in.nextDouble();
+          } catch (Exception e){
+            System.out.println("\nInvalid input. Try again.");
+            in.nextLine();
+          }
+        }
 
         int status = activeAccount.withdraw(amount);
         if (status == ATM.INVALID) {
@@ -220,7 +238,7 @@ public class ATM {
           try {
   				  accountToTransfer = in.nextLong();
     			} catch (Exception e){
-    				System.out.println("\nInvalid input. Try again.\n");
+    				System.out.println("\nInvalid input. Try again.");
             in.nextLine();
     			}
         }
