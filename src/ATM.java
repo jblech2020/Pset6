@@ -32,17 +32,36 @@ public class ATM {
         }
     }
 
+    public boolean checkStringInput(String input){
+      if (input.isEmpty()){
+        return true;
+      } else if (input.equals("-1")){
+        return false;
+      }
+
+      for (int i=0; i<input.length(); i++){
+        if (!Character.isDigit(input.charAt(i))){
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     public void startup() {
         System.out.println("Welcome to the AIT ATM!");
 
         while (true) {
             //initializes variables
             int pin = 100000;
-            String accountNo = "account";
+            String accountNo = "";
 
             System.out.print("\n");
-            System.out.print("Account No.: ");
-            accountNo = in.nextLine().strip();
+            while (checkStringInput(accountNo)){
+              System.out.print("Account No.: ");
+              accountNo = in.nextLine().strip();
+            }
+
 
             if (!accountNo.equals("+")){
                 while (pin != -1 && (pin>9999 || pin<1000)){
@@ -50,7 +69,6 @@ public class ATM {
                     try {
                       pin = in.nextInt();
                     } catch (InputMismatchException e) {
-                      System.out.println("\nPlease enter a four digit number.\n");
                       in.nextLine();
                     }
                 }
@@ -62,23 +80,28 @@ public class ATM {
                 //Initializes variables
                 String firstName;
                 String lastName;
-                int newPin;
+                int newPin = 10000000;
 
                 //Regulates variable's format
                 do {
-                  System.out.print("First name: ");
-                  firstName = in.nextLine().strip();
+                    System.out.print("First name: ");
+                    firstName = in.nextLine().strip();
                 } while (firstName.length()>20 || firstName.length()<1 || firstName == null);
 
                 do {
-                  System.out.print("Last name: ");
-                  lastName = in.nextLine().strip();
+                    System.out.print("Last name: ");
+                    lastName = in.nextLine().strip();
                 } while (lastName.length()>20 || lastName.length()<1 || lastName == null);
 
-                do {
-                  System.out.print("PIN: ");
-                  newPin = in.nextInt();
-                } while (1000 > newPin || newPin > 9999);
+                while (1000 > newPin || newPin > 9999) {
+                    System.out.print("PIN: ");
+                    try {
+                      newPin = in.nextInt();
+                    } catch (InputMismatchException e) {
+                      System.out.println("\nPlease enter a four digit number.\n");
+                      in.nextLine();
+                    }
+                }
 
                 //Creates the new account with the inputted information
                 System.out.println(bank.createAccount(newPin, new User(firstName, lastName)));
